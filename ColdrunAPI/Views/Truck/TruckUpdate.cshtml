@@ -1,0 +1,67 @@
+﻿@model TruckModel
+@{
+    ViewData["Title"] = "Trucks";
+}
+
+<h1>Truck Update</h1>
+
+<form method="post" asp-action="UpdateExecute" asp-route-id="@Model.Id">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Code" class="control-label"></label>
+        <input asp-for="Code" value="@Model.Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" value="@Model.Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" class="form-control">
+            <option value="">-- Select Status --</option>
+            <option value="Out_Of_Service">Out Of Service</option>
+            @if (Model.Status == Status.Out_Of_Service)
+            {
+                <option value="Loading">Loading</option>
+                <option value="To_Job">To_Job</option>
+                <option value="At_Job">At_Job</option>
+                <option value="Returning">Returning</option>
+            }
+            else if (Model.Status == Status.Loading)
+            {
+                <option value="Loading">Loading</option>
+                <option value="To_Job">To_Job</option>
+            }
+            else if (Model.Status == Status.To_Job)
+            {
+                <option value="To_Job">To_Job</option>
+                <option value="At_Job">At_Job</option>
+            }
+            else if (Model.Status == Status.At_Job)
+            {
+                <option value="At_Job">At_Job</option>
+                <option value="Returning">Returning</option>
+            }
+            else if (Model.Status == Status.Returning)
+            {
+                <option value="Returning">Returning</option>
+                <option value="Loading">Loading</option>
+            }
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" value="@Model.Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-3">
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,83 @@
+﻿@model TruckListModel
+@{
+    ViewData["Title"] = "Trucks";
+}
+
+<h1>Truck List</h1>
+
+<form method="post" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="NewTruck.Code" class="control-label"></label>
+        <input asp-for="NewTruck.Code" class="form-control" />
+        <span asp-validation-for="NewTruck.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewTruck.Name" class="control-label"></label>
+        <input asp-for="NewTruck.Name" class="form-control" />
+        <span asp-validation-for="NewTruck.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewTruck.Status" class="control-label"></label>
+        <select asp-for="NewTruck.Status" class="form-control">
+            <option value="">-- Select Status --</option>
+            <option value="Out_Of_Service">Out Of Service</option>
+            <option value="Loading">Loading</option>
+            <option value="To_Job">To_Job</option>
+            <option value="At_Job">At_Job</option>
+            <option value="Returning">Returning</option>
+        </select>
+        <span asp-validation-for="NewTruck.Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewTruck.Description" class="control-label"></label>
+        <input asp-for="NewTruck.Description" class="form-control" />
+        <span asp-validation-for="NewTruck.Description" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+@using (Html.BeginForm("FindBy", "Truck", FormMethod.Get))
+{
+    <p class="mt-5">
+        Find: @Html.TextBox("SearchString")
+        <input class="btn btn-info" type="submit" value="Search" />
+    </p>
+}
+<table class="table mt-5 table-hover">
+    <thead>
+        <tr>
+            <th scope="col"><a class="text-decoration-none" asp-action="SortBy" asp-route-sortASC="@Model.SortASC" asp-route-sortName="code">Code</a></th>
+            <th scope="col"><a class="text-decoration-none" asp-action="SortBy" asp-route-sortASC="@Model.SortASC" asp-route-sortName="name">Name</a></th>
+            <th scope="col"><a class="text-decoration-none" asp-action="SortBy" asp-route-sortASC="@Model.SortASC" asp-route-sortName="description">Description</a></th>
+            <th scope="col"><a class="text-decoration-none" asp-action="SortBy" asp-route-sortASC="@Model.SortASC" asp-route-sortName="status">Status</a></th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var truck in Model.Trucks)
+        {
+            <tr>
+                <td>@truck.Code</td>
+                <td>@truck.Name</td>
+                <td>@truck.Description</td>
+                <td>@truck.Status</td>
+                <td>
+                    <form class="d-inline-block" method="post" asp-action="Delete" asp-route-id="@truck.Id">
+                        <button class="btn btn-danger d-inline-block">✖</button>
+                    </form>
+
+                    <form class="d-inline-block" method="post" asp-action="Update" asp-route-id="@truck.Id">
+                        <button class="btn btn-warning d-inline-block">✎</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
